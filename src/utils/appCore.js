@@ -14,8 +14,9 @@ function saveData(data){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(data
 function exportData(data){const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download=`english-mastery-backup-${todayStr()}.json`;a.click();URL.revokeObjectURL(url);}
 
 // ═══ UPDATE NOTIFICATION SYSTEM ═══
-const APP_VERSION="3.0.1";
+const APP_VERSION="3.2.0";
 const UPDATES=[
+  {ver:"3.2.0",date:"2026-05-09",title:"V3.2 업데이트!",items:["단어 카드에 예문(Example Sentence) 추가","청취 지문 3편으로 확대 (AI·면접 추가)","어휘 퀴즈 오답 시 정답 표시 개선","Reading 결과 화면에 돌아가기 버튼 추가","학습 기록에 연속 학습일(Streak) 표시","문법 검사 패턴 10개 추가 강화","Speaking 분석 세분화 및 팁 보강"]},
   {ver:"3.0.1",date:"2026-04-12",title:"V3 출시!",items:["IELTS/PTE 전환 기능","각 섹션 20문제로 확대","복습 탭 추가","TTS 발음 (미국/영국/호주)","Writing 전문가 피드백","Speaking 녹음 & 분석","데이터 백업/복원 기능","업데이트 알림 시스템"]},
 ];
 
@@ -33,85 +34,85 @@ const F={h:"'Sora',sans-serif",b:"'Sora',sans-serif",m:"'Fira Code',monospace"};
 
 // ═══ VOCABULARY DATABASE (80 words) ═══
 const VOCAB=[
-{w:"Ubiquitous",k:"어디에나 있는",p:"/juːˈbɪkwɪtəs/",lv:"고급",syn:["Omnipresent","Pervasive"],ant:["Rare","Scarce"],sim:["Prevalent","Widespread"]},
-{w:"Ameliorate",k:"개선하다",p:"/əˈmiːliəreɪt/",lv:"고급",syn:["Improve","Enhance"],ant:["Worsen","Deteriorate"],sim:["Alleviate","Rectify"]},
-{w:"Pragmatic",k:"실용적인",p:"/præɡˈmætɪk/",lv:"중급",syn:["Practical","Realistic"],ant:["Idealistic","Impractical"],sim:["Sensible","Down-to-earth"]},
-{w:"Ephemeral",k:"일시적인",p:"/ɪˈfemərəl/",lv:"고급",syn:["Transient","Fleeting"],ant:["Permanent","Enduring"],sim:["Short-lived","Momentary"]},
-{w:"Exacerbate",k:"악화시키다",p:"/ɪɡˈzæsərbeɪt/",lv:"고급",syn:["Aggravate","Worsen"],ant:["Alleviate","Mitigate"],sim:["Intensify","Compound"]},
-{w:"Paradigm",k:"패러다임, 모범",p:"/ˈpærədaɪm/",lv:"중급",syn:["Model","Framework"],ant:["Anomaly"],sim:["Archetype","Standard"]},
-{w:"Mitigate",k:"완화하다",p:"/ˈmɪtɪɡeɪt/",lv:"중급",syn:["Alleviate","Reduce"],ant:["Aggravate","Intensify"],sim:["Ease","Moderate"]},
-{w:"Eloquent",k:"웅변의, 유창한",p:"/ˈeləkwənt/",lv:"중급",syn:["Articulate","Fluent"],ant:["Inarticulate"],sim:["Expressive","Silver-tongued"]},
-{w:"Unprecedented",k:"전례 없는",p:"/ʌnˈpresɪdentɪd/",lv:"중급",syn:["Unparalleled","Novel"],ant:["Common","Typical"],sim:["Groundbreaking","Extraordinary"]},
-{w:"Scrutinize",k:"면밀히 조사하다",p:"/ˈskruːtənaɪz/",lv:"고급",syn:["Examine","Inspect"],ant:["Glance","Overlook"],sim:["Analyze","Probe"]},
-{w:"Resilient",k:"회복력 있는",p:"/rɪˈzɪliənt/",lv:"중급",syn:["Tough","Hardy"],ant:["Fragile","Vulnerable"],sim:["Adaptable","Robust"]},
-{w:"Ambiguous",k:"모호한",p:"/æmˈbɪɡjuəs/",lv:"중급",syn:["Vague","Unclear"],ant:["Clear","Definite"],sim:["Equivocal","Nebulous"]},
-{w:"Meticulous",k:"꼼꼼한",p:"/məˈtɪkjələs/",lv:"중급",syn:["Thorough","Precise"],ant:["Careless","Sloppy"],sim:["Painstaking","Scrupulous"]},
-{w:"Inevitable",k:"피할 수 없는",p:"/ɪnˈevɪtəbl/",lv:"중급",syn:["Unavoidable","Certain"],ant:["Avoidable","Preventable"],sim:["Inescapable","Destined"]},
-{w:"Conundrum",k:"난제",p:"/kəˈnʌndrəm/",lv:"고급",syn:["Puzzle","Dilemma"],ant:["Solution"],sim:["Enigma","Quandary"]},
-{w:"Proliferate",k:"급증하다",p:"/prəˈlɪfəreɪt/",lv:"고급",syn:["Multiply","Spread"],ant:["Decrease","Diminish"],sim:["Expand","Burgeon"]},
-{w:"Stringent",k:"엄격한",p:"/ˈstrɪndʒənt/",lv:"중급",syn:["Strict","Rigorous"],ant:["Lenient","Lax"],sim:["Severe","Exacting"]},
-{w:"Volatile",k:"변덕스러운",p:"/ˈvɒlətaɪl/",lv:"중급",syn:["Unstable","Unpredictable"],ant:["Stable","Steady"],sim:["Erratic","Turbulent"]},
-{w:"Consensus",k:"합의",p:"/kənˈsensəs/",lv:"중급",syn:["Agreement","Accord"],ant:["Disagreement","Discord"],sim:["Unanimity","Harmony"]},
-{w:"Detrimental",k:"해로운",p:"/ˌdetrɪˈmentl/",lv:"중급",syn:["Harmful","Damaging"],ant:["Beneficial"],sim:["Injurious","Adverse"]},
-{w:"Coherent",k:"일관성 있는",p:"/koʊˈhɪrənt/",lv:"중급",syn:["Logical","Consistent"],ant:["Incoherent"],sim:["Lucid","Rational"]},
-{w:"Substantiate",k:"입증하다",p:"/səbˈstænʃieɪt/",lv:"고급",syn:["Verify","Confirm"],ant:["Disprove","Refute"],sim:["Corroborate","Validate"]},
-{w:"Conducive",k:"도움이 되는",p:"/kənˈdjuːsɪv/",lv:"고급",syn:["Favorable","Beneficial"],ant:["Hindering"],sim:["Propitious","Contributory"]},
-{w:"Disparity",k:"격차",p:"/dɪˈspærəti/",lv:"중급",syn:["Inequality","Gap"],ant:["Equality","Parity"],sim:["Discrepancy","Imbalance"]},
-{w:"Tangible",k:"유형의, 실질적인",p:"/ˈtændʒəbl/",lv:"중급",syn:["Concrete","Real"],ant:["Intangible","Abstract"],sim:["Palpable","Material"]},
-{w:"Perpetuate",k:"영속시키다",p:"/pərˈpetʃueɪt/",lv:"고급",syn:["Continue","Sustain"],ant:["Stop","End"],sim:["Prolong","Preserve"]},
-{w:"Succinct",k:"간결한",p:"/səkˈsɪŋkt/",lv:"중급",syn:["Concise","Brief"],ant:["Verbose"],sim:["Terse","Pithy"]},
-{w:"Arbitrary",k:"임의의",p:"/ˈɑːrbɪtreri/",lv:"중급",syn:["Random","Capricious"],ant:["Systematic"],sim:["Whimsical","Haphazard"]},
-{w:"Commensurate",k:"비례하는",p:"/kəˈmenʃərət/",lv:"고급",syn:["Proportionate","Equivalent"],ant:["Disproportionate"],sim:["Corresponding","Comparable"]},
-{w:"Fluctuate",k:"변동하다",p:"/ˈflʌktʃueɪt/",lv:"중급",syn:["Vary","Oscillate"],ant:["Stabilize"],sim:["Waver","Vacillate"]},
-{w:"Comprehensive",k:"포괄적인",p:"/ˌkɒmprɪˈhensɪv/",lv:"중급",syn:["Thorough","Extensive"],ant:["Limited","Narrow"],sim:["Exhaustive","All-inclusive"]},
-{w:"Articulate",k:"명확히 표현하다",p:"/ɑːrˈtɪkjuleɪt/",lv:"중급",syn:["Express","Convey"],ant:["Mumble"],sim:["Enunciate","Communicate"]},
-{w:"Deteriorate",k:"악화되다",p:"/dɪˈtɪriəreɪt/",lv:"중급",syn:["Decline","Worsen"],ant:["Improve"],sim:["Degrade","Degenerate"]},
-{w:"Pertinent",k:"관련된",p:"/ˈpɜːrtɪnənt/",lv:"중급",syn:["Relevant","Applicable"],ant:["Irrelevant"],sim:["Germane","Apposite"]},
-{w:"Elicit",k:"이끌어내다",p:"/ɪˈlɪsɪt/",lv:"고급",syn:["Evoke","Extract"],ant:["Suppress"],sim:["Draw out","Provoke"]},
-{w:"Plausible",k:"그럴듯한",p:"/ˈplɔːzəbl/",lv:"중급",syn:["Credible","Believable"],ant:["Implausible"],sim:["Feasible","Conceivable"]},
-{w:"Inherent",k:"내재된",p:"/ɪnˈhɪrənt/",lv:"중급",syn:["Intrinsic","Innate"],ant:["Extrinsic"],sim:["Built-in","Essential"]},
-{w:"Discrepancy",k:"불일치",p:"/dɪˈskrepənsi/",lv:"중급",syn:["Inconsistency","Difference"],ant:["Agreement"],sim:["Variance","Divergence"]},
-{w:"Feasible",k:"실현 가능한",p:"/ˈfiːzəbl/",lv:"중급",syn:["Possible","Viable"],ant:["Impossible"],sim:["Achievable","Workable"]},
-{w:"Corroborate",k:"확증하다",p:"/kəˈrɒbəreɪt/",lv:"고급",syn:["Confirm","Verify"],ant:["Contradict"],sim:["Substantiate","Authenticate"]},
-{w:"Proponent",k:"지지자",p:"/prəˈpoʊnənt/",lv:"고급",syn:["Advocate","Supporter"],ant:["Opponent","Critic"],sim:["Champion","Backer"]},
-{w:"Superfluous",k:"불필요한",p:"/suːˈpɜːrfluəs/",lv:"고급",syn:["Excessive","Redundant"],ant:["Essential"],sim:["Surplus","Extraneous"]},
-{w:"Nuance",k:"미묘한 차이",p:"/ˈnjuːɑːns/",lv:"중급",syn:["Subtlety","Shade"],ant:[],sim:["Distinction","Refinement"]},
-{w:"Pervasive",k:"만연한",p:"/pərˈveɪsɪv/",lv:"고급",syn:["Widespread","Prevalent"],ant:["Rare"],sim:["Ubiquitous","Rampant"]},
-{w:"Undermine",k:"약화시키다",p:"/ˌʌndərˈmaɪn/",lv:"중급",syn:["Weaken","Sabotage"],ant:["Strengthen"],sim:["Subvert","Erode"]},
-{w:"Impediment",k:"장애",p:"/ɪmˈpedɪmənt/",lv:"고급",syn:["Obstacle","Hindrance"],ant:["Aid"],sim:["Barrier","Encumbrance"]},
-{w:"Augment",k:"증가시키다",p:"/ɔːɡˈment/",lv:"중급",syn:["Increase","Enhance"],ant:["Decrease"],sim:["Supplement","Boost"]},
-{w:"Benevolent",k:"자선적인",p:"/bəˈnevələnt/",lv:"중급",syn:["Kind","Charitable"],ant:["Malevolent"],sim:["Generous","Altruistic"]},
-{w:"Catalyst",k:"촉매",p:"/ˈkætəlɪst/",lv:"중급",syn:["Stimulus","Trigger"],ant:["Inhibitor"],sim:["Impetus","Spark"]},
-{w:"Eradicate",k:"근절하다",p:"/ɪˈrædɪkeɪt/",lv:"고급",syn:["Eliminate","Destroy"],ant:["Create"],sim:["Abolish","Annihilate"]},
-{w:"Facilitate",k:"촉진하다",p:"/fəˈsɪlɪteɪt/",lv:"중급",syn:["Ease","Enable"],ant:["Hinder"],sim:["Expedite","Streamline"]},
-{w:"Gregarious",k:"사교적인",p:"/ɡrɪˈɡeəriəs/",lv:"고급",syn:["Sociable","Outgoing"],ant:["Introverted"],sim:["Convivial","Affable"]},
-{w:"Innate",k:"선천적인",p:"/ɪˈneɪt/",lv:"중급",syn:["Inborn","Natural"],ant:["Learned"],sim:["Inherent","Intrinsic"]},
-{w:"Lucrative",k:"수익성 있는",p:"/ˈluːkrətɪv/",lv:"중급",syn:["Profitable","Rewarding"],ant:["Unprofitable"],sim:["Gainful","Remunerative"]},
-{w:"Negligible",k:"무시할 정도의",p:"/ˈneɡlɪdʒəbl/",lv:"중급",syn:["Insignificant","Trivial"],ant:["Significant"],sim:["Minor","Inconsequential"]},
-{w:"Prolific",k:"다작의",p:"/prəˈlɪfɪk/",lv:"중급",syn:["Productive","Fertile"],ant:["Unproductive"],sim:["Abundant","Copious"]},
-{w:"Refute",k:"반박하다",p:"/rɪˈfjuːt/",lv:"중급",syn:["Disprove","Deny"],ant:["Confirm"],sim:["Rebut","Counter"]},
-{w:"Tenacious",k:"끈질긴",p:"/tɪˈneɪʃəs/",lv:"고급",syn:["Persistent","Determined"],ant:["Yielding"],sim:["Resolute","Dogged"]},
-{w:"Vindicate",k:"정당성을 입증하다",p:"/ˈvɪndɪkeɪt/",lv:"고급",syn:["Justify","Exonerate"],ant:["Blame"],sim:["Clear","Absolve"]},
-{w:"Acquiesce",k:"묵묵히 따르다",p:"/ˌækwiˈes/",lv:"고급",syn:["Comply","Consent"],ant:["Resist"],sim:["Submit","Yield"]},
-{w:"Disseminate",k:"퍼뜨리다",p:"/dɪˈsemɪneɪt/",lv:"고급",syn:["Spread","Distribute"],ant:["Collect"],sim:["Circulate","Propagate"]},
-{w:"Erratic",k:"불규칙한",p:"/ɪˈrætɪk/",lv:"중급",syn:["Unpredictable","Inconsistent"],ant:["Consistent"],sim:["Capricious","Mercurial"]},
-{w:"Precarious",k:"불안정한",p:"/prɪˈkeəriəs/",lv:"고급",syn:["Unstable","Risky"],ant:["Safe","Secure"],sim:["Perilous","Hazardous"]},
-{w:"Repercussion",k:"반향, 영향",p:"/ˌriːpərˈkʌʃən/",lv:"중급",syn:["Consequence","Effect"],ant:["Cause"],sim:["Ramification","Aftermath"]},
-{w:"Indispensable",k:"필수불가결한",p:"/ˌɪndɪˈspensəbl/",lv:"중급",syn:["Essential","Vital"],ant:["Dispensable"],sim:["Crucial","Imperative"]},
-{w:"Cumbersome",k:"다루기 힘든",p:"/ˈkʌmbərsəm/",lv:"고급",syn:["Awkward","Unwieldy"],ant:["Convenient"],sim:["Burdensome","Clunky"]},
-{w:"Galvanize",k:"자극하다",p:"/ˈɡælvənaɪz/",lv:"고급",syn:["Stimulate","Motivate"],ant:["Discourage"],sim:["Energize","Spur"]},
-{w:"Circumvent",k:"우회하다",p:"/ˌsɜːrkəmˈvent/",lv:"고급",syn:["Bypass","Avoid"],ant:["Confront"],sim:["Evade","Sidestep"]},
-{w:"Contentious",k:"논쟁적인",p:"/kənˈtenʃəs/",lv:"중급",syn:["Controversial","Disputed"],ant:["Uncontroversial"],sim:["Divisive","Debatable"]},
-{w:"Ramification",k:"파급효과",p:"/ˌræmɪfɪˈkeɪʃən/",lv:"고급",syn:["Consequence","Implication"],ant:[],sim:["Repercussion","Outcome"]},
-{w:"Exemplify",k:"예시하다",p:"/ɪɡˈzemplɪfaɪ/",lv:"중급",syn:["Illustrate","Demonstrate"],ant:[],sim:["Represent","Typify"]},
-{w:"Juxtapose",k:"나란히 놓다",p:"/ˌdʒʌkstəˈpoʊz/",lv:"고급",syn:["Compare","Contrast"],ant:[],sim:["Place side by side","Set against"]},
-{w:"Encompass",k:"포함하다",p:"/ɪnˈkʌmpəs/",lv:"중급",syn:["Include","Contain"],ant:["Exclude"],sim:["Cover","Embrace"]},
-{w:"Diminish",k:"줄다",p:"/dɪˈmɪnɪʃ/",lv:"중급",syn:["Reduce","Decrease"],ant:["Increase"],sim:["Lessen","Wane"]},
-{w:"Skeptical",k:"회의적인",p:"/ˈskeptɪkl/",lv:"중급",syn:["Doubtful","Questioning"],ant:["Trusting"],sim:["Cynical","Incredulous"]},
-{w:"Watershed",k:"분수령",p:"/ˈwɔːtərʃed/",lv:"고급",syn:["Turning point","Milestone"],ant:[],sim:["Landmark","Pivotal moment"]},
-{w:"Zealous",k:"열정적인",p:"/ˈzeləs/",lv:"중급",syn:["Passionate","Eager"],ant:["Apathetic"],sim:["Fervent","Ardent"]},
-{w:"Brevity",k:"간결함",p:"/ˈbrevəti/",lv:"고급",syn:["Conciseness","Shortness"],ant:["Verbosity"],sim:["Terseness","Pithiness"]},
-{w:"Culminate",k:"절정에 달하다",p:"/ˈkʌlmɪneɪt/",lv:"고급",syn:["Climax","Peak"],ant:["Begin"],sim:["Conclude","Result in"]},
+{w:"Ubiquitous",k:"어디에나 있는",p:"/juːˈbɪkwɪtəs/",lv:"고급",syn:["Omnipresent","Pervasive"],ant:["Rare","Scarce"],sim:["Prevalent","Widespread"],ex:"Smartphones have become ubiquitous in modern society, transforming how people communicate."},
+{w:"Ameliorate",k:"개선하다",p:"/əˈmiːliəreɪt/",lv:"고급",syn:["Improve","Enhance"],ant:["Worsen","Deteriorate"],sim:["Alleviate","Rectify"],ex:"Government policies aim to ameliorate the living conditions of vulnerable communities."},
+{w:"Pragmatic",k:"실용적인",p:"/præɡˈmætɪk/",lv:"중급",syn:["Practical","Realistic"],ant:["Idealistic","Impractical"],sim:["Sensible","Down-to-earth"],ex:"A pragmatic approach to education focuses on skills students can apply in real life."},
+{w:"Ephemeral",k:"일시적인",p:"/ɪˈfemərəl/",lv:"고급",syn:["Transient","Fleeting"],ant:["Permanent","Enduring"],sim:["Short-lived","Momentary"],ex:"Social media trends are often ephemeral, disappearing as quickly as they emerge."},
+{w:"Exacerbate",k:"악화시키다",p:"/ɪɡˈzæsərbeɪt/",lv:"고급",syn:["Aggravate","Worsen"],ant:["Alleviate","Mitigate"],sim:["Intensify","Compound"],ex:"Rapid deforestation can exacerbate climate change by reducing carbon absorption."},
+{w:"Paradigm",k:"패러다임, 모범",p:"/ˈpærədaɪm/",lv:"중급",syn:["Model","Framework"],ant:["Anomaly"],sim:["Archetype","Standard"],ex:"The internet represented a paradigm shift in how information is accessed and shared."},
+{w:"Mitigate",k:"완화하다",p:"/ˈmɪtɪɡeɪt/",lv:"중급",syn:["Alleviate","Reduce"],ant:["Aggravate","Intensify"],sim:["Ease","Moderate"],ex:"Urban planners introduced green spaces to mitigate the effects of air pollution."},
+{w:"Eloquent",k:"웅변의, 유창한",p:"/ˈeləkwənt/",lv:"중급",syn:["Articulate","Fluent"],ant:["Inarticulate"],sim:["Expressive","Silver-tongued"],ex:"The scholar delivered an eloquent speech on the importance of cultural diversity."},
+{w:"Unprecedented",k:"전례 없는",p:"/ʌnˈpresɪdentɪd/",lv:"중급",syn:["Unparalleled","Novel"],ant:["Common","Typical"],sim:["Groundbreaking","Extraordinary"],ex:"The pandemic caused an unprecedented disruption to global supply chains."},
+{w:"Scrutinize",k:"면밀히 조사하다",p:"/ˈskruːtənaɪz/",lv:"고급",syn:["Examine","Inspect"],ant:["Glance","Overlook"],sim:["Analyze","Probe"],ex:"Researchers scrutinize data carefully to ensure their conclusions are accurate."},
+{w:"Resilient",k:"회복력 있는",p:"/rɪˈzɪliənt/",lv:"중급",syn:["Tough","Hardy"],ant:["Fragile","Vulnerable"],sim:["Adaptable","Robust"],ex:"Resilient communities are better equipped to recover from natural disasters."},
+{w:"Ambiguous",k:"모호한",p:"/æmˈbɪɡjuəs/",lv:"중급",syn:["Vague","Unclear"],ant:["Clear","Definite"],sim:["Equivocal","Nebulous"],ex:"The policy's ambiguous wording led to widespread confusion among those trying to implement it."},
+{w:"Meticulous",k:"꼼꼼한",p:"/məˈtɪkjələs/",lv:"중급",syn:["Thorough","Precise"],ant:["Careless","Sloppy"],sim:["Painstaking","Scrupulous"],ex:"The architect was meticulous in reviewing every detail of the construction plans."},
+{w:"Inevitable",k:"피할 수 없는",p:"/ɪnˈevɪtəbl/",lv:"중급",syn:["Unavoidable","Certain"],ant:["Avoidable","Preventable"],sim:["Inescapable","Destined"],ex:"With growing populations, urban expansion seems inevitable in many regions around the world."},
+{w:"Conundrum",k:"난제",p:"/kəˈnʌndrəm/",lv:"고급",syn:["Puzzle","Dilemma"],ant:["Solution"],sim:["Enigma","Quandary"],ex:"How to balance economic growth with environmental protection remains a central conundrum."},
+{w:"Proliferate",k:"급증하다",p:"/prəˈlɪfəreɪt/",lv:"고급",syn:["Multiply","Spread"],ant:["Decrease","Diminish"],sim:["Expand","Burgeon"],ex:"Online learning platforms have proliferated in response to growing demand for flexible education."},
+{w:"Stringent",k:"엄격한",p:"/ˈstrɪndʒənt/",lv:"중급",syn:["Strict","Rigorous"],ant:["Lenient","Lax"],sim:["Severe","Exacting"],ex:"Stringent environmental regulations are necessary to protect natural habitats from exploitation."},
+{w:"Volatile",k:"변덕스러운",p:"/ˈvɒlətaɪl/",lv:"중급",syn:["Unstable","Unpredictable"],ant:["Stable","Steady"],sim:["Erratic","Turbulent"],ex:"The global oil market is notoriously volatile, with prices fluctuating dramatically over time."},
+{w:"Consensus",k:"합의",p:"/kənˈsensəs/",lv:"중급",syn:["Agreement","Accord"],ant:["Disagreement","Discord"],sim:["Unanimity","Harmony"],ex:"Scientists have reached a consensus that human activity is the primary driver of climate change."},
+{w:"Detrimental",k:"해로운",p:"/ˌdetrɪˈmentl/",lv:"중급",syn:["Harmful","Damaging"],ant:["Beneficial"],sim:["Injurious","Adverse"],ex:"Excessive screen time can be detrimental to children's cognitive development and social skills."},
+{w:"Coherent",k:"일관성 있는",p:"/koʊˈhɪrənt/",lv:"중급",syn:["Logical","Consistent"],ant:["Incoherent"],sim:["Lucid","Rational"],ex:"A coherent argument presents ideas in a logical, well-organized manner that readers can follow."},
+{w:"Substantiate",k:"입증하다",p:"/səbˈstænʃieɪt/",lv:"고급",syn:["Verify","Confirm"],ant:["Disprove","Refute"],sim:["Corroborate","Validate"],ex:"The researcher used extensive statistical data to substantiate her hypothesis about urban poverty."},
+{w:"Conducive",k:"도움이 되는",p:"/kənˈdjuːsɪv/",lv:"고급",syn:["Favorable","Beneficial"],ant:["Hindering"],sim:["Propitious","Contributory"],ex:"A quiet, well-lit environment is conducive to focused study and productive learning."},
+{w:"Disparity",k:"격차",p:"/dɪˈspærəti/",lv:"중급",syn:["Inequality","Gap"],ant:["Equality","Parity"],sim:["Discrepancy","Imbalance"],ex:"The growing disparity in wealth between nations threatens global economic stability."},
+{w:"Tangible",k:"유형의, 실질적인",p:"/ˈtændʒəbl/",lv:"중급",syn:["Concrete","Real"],ant:["Intangible","Abstract"],sim:["Palpable","Material"],ex:"The program produced tangible results, with unemployment rates falling by ten percent."},
+{w:"Perpetuate",k:"영속시키다",p:"/pərˈpetʃueɪt/",lv:"고급",syn:["Continue","Sustain"],ant:["Stop","End"],sim:["Prolong","Preserve"],ex:"Stereotypes can perpetuate inequalities by shaping perceptions and limiting opportunities."},
+{w:"Succinct",k:"간결한",p:"/səkˈsɪŋkt/",lv:"중급",syn:["Concise","Brief"],ant:["Verbose"],sim:["Terse","Pithy"],ex:"A succinct summary of the lengthy report was prepared for busy policymakers."},
+{w:"Arbitrary",k:"임의의",p:"/ˈɑːrbɪtreri/",lv:"중급",syn:["Random","Capricious"],ant:["Systematic"],sim:["Whimsical","Haphazard"],ex:"Critics argued that the policy change was arbitrary and lacked any clear justification."},
+{w:"Commensurate",k:"비례하는",p:"/kəˈmenʃərət/",lv:"고급",syn:["Proportionate","Equivalent"],ant:["Disproportionate"],sim:["Corresponding","Comparable"],ex:"Employees expect salaries commensurate with their level of education and professional experience."},
+{w:"Fluctuate",k:"변동하다",p:"/ˈflʌktʃueɪt/",lv:"중급",syn:["Vary","Oscillate"],ant:["Stabilize"],sim:["Waver","Vacillate"],ex:"Exchange rates fluctuate daily in response to shifting global economic conditions."},
+{w:"Comprehensive",k:"포괄적인",p:"/ˌkɒmprɪˈhensɪv/",lv:"중급",syn:["Thorough","Extensive"],ant:["Limited","Narrow"],sim:["Exhaustive","All-inclusive"],ex:"The report provided a comprehensive overview of all factors affecting public health outcomes."},
+{w:"Articulate",k:"명확히 표현하다",p:"/ɑːrˈtɪkjuleɪt/",lv:"중급",syn:["Express","Convey"],ant:["Mumble"],sim:["Enunciate","Communicate"],ex:"She was able to articulate complex scientific ideas with remarkable clarity in her presentation."},
+{w:"Deteriorate",k:"악화되다",p:"/dɪˈtɪriəreɪt/",lv:"중급",syn:["Decline","Worsen"],ant:["Improve"],sim:["Degrade","Degenerate"],ex:"Air quality in the city continued to deteriorate as industrial output increased each year."},
+{w:"Pertinent",k:"관련된",p:"/ˈpɜːrtɪnənt/",lv:"중급",syn:["Relevant","Applicable"],ant:["Irrelevant"],sim:["Germane","Apposite"],ex:"The lawyer raised several pertinent questions about the validity of the key evidence."},
+{w:"Elicit",k:"이끌어내다",p:"/ɪˈlɪsɪt/",lv:"고급",syn:["Evoke","Extract"],ant:["Suppress"],sim:["Draw out","Provoke"],ex:"The teacher used open-ended questions to elicit deeper thinking and discussion from students."},
+{w:"Plausible",k:"그럴듯한",p:"/ˈplɔːzəbl/",lv:"중급",syn:["Credible","Believable"],ant:["Implausible"],sim:["Feasible","Conceivable"],ex:"The scientist offered a plausible explanation for the unexpected results observed in the experiment."},
+{w:"Inherent",k:"내재된",p:"/ɪnˈhɪrənt/",lv:"중급",syn:["Intrinsic","Innate"],ant:["Extrinsic"],sim:["Built-in","Essential"],ex:"There are inherent risks in any form of financial investment, regardless of market conditions."},
+{w:"Discrepancy",k:"불일치",p:"/dɪˈskrepənsi/",lv:"중급",syn:["Inconsistency","Difference"],ant:["Agreement"],sim:["Variance","Divergence"],ex:"A discrepancy between the two financial reports immediately raised concerns about data accuracy."},
+{w:"Feasible",k:"실현 가능한",p:"/ˈfiːzəbl/",lv:"중급",syn:["Possible","Viable"],ant:["Impossible"],sim:["Achievable","Workable"],ex:"Experts debated whether the proposed high-speed rail project was feasible within the budget."},
+{w:"Corroborate",k:"확증하다",p:"/kəˈrɒbəreɪt/",lv:"고급",syn:["Confirm","Verify"],ant:["Contradict"],sim:["Substantiate","Authenticate"],ex:"Additional eyewitness accounts corroborated the journalist's initial findings about corruption."},
+{w:"Proponent",k:"지지자",p:"/prəˈpoʊnənt/",lv:"고급",syn:["Advocate","Supporter"],ant:["Opponent","Critic"],sim:["Champion","Backer"],ex:"She was a leading proponent of renewable energy reform in the national parliament."},
+{w:"Superfluous",k:"불필요한",p:"/suːˈpɜːrfluəs/",lv:"고급",syn:["Excessive","Redundant"],ant:["Essential"],sim:["Surplus","Extraneous"],ex:"The editor removed superfluous adjectives from the draft to make the writing more concise."},
+{w:"Nuance",k:"미묘한 차이",p:"/ˈnjuːɑːns/",lv:"중급",syn:["Subtlety","Shade"],ant:[],sim:["Distinction","Refinement"],ex:"Understanding the nuance of a language is essential for effective cross-cultural communication."},
+{w:"Pervasive",k:"만연한",p:"/pərˈveɪsɪv/",lv:"고급",syn:["Widespread","Prevalent"],ant:["Rare"],sim:["Ubiquitous","Rampant"],ex:"The influence of social media has become pervasive across all demographics and age groups."},
+{w:"Undermine",k:"약화시키다",p:"/ˌʌndərˈmaɪn/",lv:"중급",syn:["Weaken","Sabotage"],ant:["Strengthen"],sim:["Subvert","Erode"],ex:"Widespread corruption can undermine public trust in democratic institutions over time."},
+{w:"Impediment",k:"장애",p:"/ɪmˈpedɪmənt/",lv:"고급",syn:["Obstacle","Hindrance"],ant:["Aid"],sim:["Barrier","Encumbrance"],ex:"Language barriers are a significant impediment to successful integration for new immigrants."},
+{w:"Augment",k:"증가시키다",p:"/ɔːɡˈment/",lv:"중급",syn:["Increase","Enhance"],ant:["Decrease"],sim:["Supplement","Boost"],ex:"Technology can augment human productivity by automating routine and repetitive tasks."},
+{w:"Benevolent",k:"자선적인",p:"/bəˈnevələnt/",lv:"중급",syn:["Kind","Charitable"],ant:["Malevolent"],sim:["Generous","Altruistic"],ex:"The benevolent organization donated millions of dollars to fund educational initiatives worldwide."},
+{w:"Catalyst",k:"촉매",p:"/ˈkætəlɪst/",lv:"중급",syn:["Stimulus","Trigger"],ant:["Inhibitor"],sim:["Impetus","Spark"],ex:"The financial crisis served as a catalyst for sweeping regulatory reform across the banking sector."},
+{w:"Eradicate",k:"근절하다",p:"/ɪˈrædɪkeɪt/",lv:"고급",syn:["Eliminate","Destroy"],ant:["Create"],sim:["Abolish","Annihilate"],ex:"Global health campaigns have worked tirelessly to eradicate infectious diseases such as polio."},
+{w:"Facilitate",k:"촉진하다",p:"/fəˈsɪlɪteɪt/",lv:"중급",syn:["Ease","Enable"],ant:["Hinder"],sim:["Expedite","Streamline"],ex:"Digital communication tools facilitate collaboration between researchers working across different countries."},
+{w:"Gregarious",k:"사교적인",p:"/ɡrɪˈɡeəriəs/",lv:"고급",syn:["Sociable","Outgoing"],ant:["Introverted"],sim:["Convivial","Affable"],ex:"The gregarious student quickly formed friendships with every member of her new class."},
+{w:"Innate",k:"선천적인",p:"/ɪˈneɪt/",lv:"중급",syn:["Inborn","Natural"],ant:["Learned"],sim:["Inherent","Intrinsic"],ex:"Some researchers believe that curiosity and creativity are innate traits present from birth."},
+{w:"Lucrative",k:"수익성 있는",p:"/ˈluːkrətɪv/",lv:"중급",syn:["Profitable","Rewarding"],ant:["Unprofitable"],sim:["Gainful","Remunerative"],ex:"The pharmaceutical industry is one of the most lucrative sectors in the global economy."},
+{w:"Negligible",k:"무시할 정도의",p:"/ˈneɡlɪdʒəbl/",lv:"중급",syn:["Insignificant","Trivial"],ant:["Significant"],sim:["Minor","Inconsequential"],ex:"The environmental impact of the proposed project was deemed negligible by the review committee."},
+{w:"Prolific",k:"다작의",p:"/prəˈlɪfɪk/",lv:"중급",syn:["Productive","Fertile"],ant:["Unproductive"],sim:["Abundant","Copious"],ex:"The prolific author published more than thirty acclaimed novels during his long career."},
+{w:"Refute",k:"반박하다",p:"/rɪˈfjuːt/",lv:"중급",syn:["Disprove","Deny"],ant:["Confirm"],sim:["Rebut","Counter"],ex:"The scientist published new data to refute the widely held misconception about the disease."},
+{w:"Tenacious",k:"끈질긴",p:"/tɪˈneɪʃəs/",lv:"고급",syn:["Persistent","Determined"],ant:["Yielding"],sim:["Resolute","Dogged"],ex:"Her tenacious commitment to research ultimately led to a significant medical breakthrough."},
+{w:"Vindicate",k:"정당성을 입증하다",p:"/ˈvɪndɪkeɪt/",lv:"고급",syn:["Justify","Exonerate"],ant:["Blame"],sim:["Clear","Absolve"],ex:"The court ruling served to vindicate the activist's long campaign for social justice."},
+{w:"Acquiesce",k:"묵묵히 따르다",p:"/ˌækwiˈes/",lv:"고급",syn:["Comply","Consent"],ant:["Resist"],sim:["Submit","Yield"],ex:"Rather than prolong the dispute, the committee chose to acquiesce to the chairman's proposal."},
+{w:"Disseminate",k:"퍼뜨리다",p:"/dɪˈsemɪneɪt/",lv:"고급",syn:["Spread","Distribute"],ant:["Collect"],sim:["Circulate","Propagate"],ex:"Universities play a crucial role in disseminating knowledge and advancing public understanding."},
+{w:"Erratic",k:"불규칙한",p:"/ɪˈrætɪk/",lv:"중급",syn:["Unpredictable","Inconsistent"],ant:["Consistent"],sim:["Capricious","Mercurial"],ex:"The patient's erratic behavior and mood swings raised serious concerns among the medical team."},
+{w:"Precarious",k:"불안정한",p:"/prɪˈkeəriəs/",lv:"고급",syn:["Unstable","Risky"],ant:["Safe","Secure"],sim:["Perilous","Hazardous"],ex:"Millions of workers around the world live in precarious employment with no job security."},
+{w:"Repercussion",k:"반향, 영향",p:"/ˌriːpərˈkʌʃən/",lv:"중급",syn:["Consequence","Effect"],ant:["Cause"],sim:["Ramification","Aftermath"],ex:"The policy change had widespread repercussions for businesses operating in the affected region."},
+{w:"Indispensable",k:"필수불가결한",p:"/ˌɪndɪˈspensəbl/",lv:"중급",syn:["Essential","Vital"],ant:["Dispensable"],sim:["Crucial","Imperative"],ex:"Clean drinking water is indispensable for human survival, public health, and social development."},
+{w:"Cumbersome",k:"다루기 힘든",p:"/ˈkʌmbərsəm/",lv:"고급",syn:["Awkward","Unwieldy"],ant:["Convenient"],sim:["Burdensome","Clunky"],ex:"The cumbersome application process discouraged many eligible small businesses from seeking support."},
+{w:"Galvanize",k:"자극하다",p:"/ˈɡælvənaɪz/",lv:"고급",syn:["Stimulate","Motivate"],ant:["Discourage"],sim:["Energize","Spur"],ex:"The powerful documentary served to galvanize widespread public support for environmental reform."},
+{w:"Circumvent",k:"우회하다",p:"/ˌsɜːrkəmˈvent/",lv:"고급",syn:["Bypass","Avoid"],ant:["Confront"],sim:["Evade","Sidestep"],ex:"Some multinational companies attempt to circumvent tax obligations through complex offshore structures."},
+{w:"Contentious",k:"논쟁적인",p:"/kənˈtenʃəs/",lv:"중급",syn:["Controversial","Disputed"],ant:["Uncontroversial"],sim:["Divisive","Debatable"],ex:"Immigration policy remains one of the most contentious political issues in many democracies."},
+{w:"Ramification",k:"파급효과",p:"/ˌræmɪfɪˈkeɪʃən/",lv:"고급",syn:["Consequence","Implication"],ant:[],sim:["Repercussion","Outcome"],ex:"The researchers explored the broader ramifications of widespread antibiotic resistance for public health."},
+{w:"Exemplify",k:"예시하다",p:"/ɪɡˈzemplɪfaɪ/",lv:"중급",syn:["Illustrate","Demonstrate"],ant:[],sim:["Represent","Typify"],ex:"This case study exemplifies how targeted government investment can drive economic development."},
+{w:"Juxtapose",k:"나란히 놓다",p:"/ˌdʒʌkstəˈpoʊz/",lv:"고급",syn:["Compare","Contrast"],ant:[],sim:["Place side by side","Set against"],ex:"The documentary juxtaposes scenes of extreme luxury and poverty to highlight global inequality."},
+{w:"Encompass",k:"포함하다",p:"/ɪnˈkʌmpəs/",lv:"중급",syn:["Include","Contain"],ant:["Exclude"],sim:["Cover","Embrace"],ex:"The new legislation encompasses a wide range of provisions to improve workplace safety standards."},
+{w:"Diminish",k:"줄다",p:"/dɪˈmɪnɪʃ/",lv:"중급",syn:["Reduce","Decrease"],ant:["Increase"],sim:["Lessen","Wane"],ex:"Effective public health campaigns can significantly diminish the spread of preventable diseases."},
+{w:"Skeptical",k:"회의적인",p:"/ˈskeptɪkl/",lv:"중급",syn:["Doubtful","Questioning"],ant:["Trusting"],sim:["Cynical","Incredulous"],ex:"Many economists were skeptical about the government's optimistic economic growth projections."},
+{w:"Watershed",k:"분수령",p:"/ˈwɔːtərʃed/",lv:"고급",syn:["Turning point","Milestone"],ant:[],sim:["Landmark","Pivotal moment"],ex:"The discovery of penicillin marked a watershed moment in the history of modern medicine."},
+{w:"Zealous",k:"열정적인",p:"/ˈzeləs/",lv:"중급",syn:["Passionate","Eager"],ant:["Apathetic"],sim:["Fervent","Ardent"],ex:"The zealous advocate spent decades tirelessly fighting for the rights of marginalized workers."},
+{w:"Brevity",k:"간결함",p:"/ˈbrevəti/",lv:"고급",syn:["Conciseness","Shortness"],ant:["Verbosity"],sim:["Terseness","Pithiness"],ex:"The report was widely praised for its brevity and clarity, conveying complex ideas efficiently."},
+{w:"Culminate",k:"절정에 달하다",p:"/ˈkʌlmɪneɪt/",lv:"고급",syn:["Climax","Peak"],ant:["Begin"],sim:["Conclude","Result in"],ex:"Years of dedicated research ultimately culminated in a landmark paper published in a top journal."},
 ];
 
 // ═══ READING PASSAGES WITH 20 QUESTIONS EACH ═══
@@ -216,6 +217,54 @@ qs:[
 {q:"Soil erosion is caused by:",o:["Too much rain","Loss of tree root systems and canopy","Earthquakes","Human digging"],a:1},
 {q:"The purpose of mentioning satellite data is to:",o:["Show off technology","Provide evidence for claims","Change the topic","Entertain"],a:1},
 ]},
+{title:"Career Development Workshop: Interview Skills",ctx:"A career counselor provides guidance on preparing for job interviews and professional communication.",
+sample:"Welcome to today's career development workshop. A successful job interview requires thorough preparation and clear communication. First, research the company before your interview — study their mission, recent achievements, and industry position. Second, prepare specific examples using the STAR method: Situation, Task, Action, and Result. This approach helps you give structured, memorable answers. Third, practice your responses aloud to reduce filler words such as um and uh, and to build natural confidence. Dress professionally and arrive ten to fifteen minutes early to make a positive first impression. During the interview, listen carefully to each question and take a brief moment to organize your thoughts before responding. Ask thoughtful questions about the role and company culture, because interviews are two-way conversations. Remember, you are also evaluating whether the company aligns with your professional goals. Finally, send a brief thank-you email within twenty-four hours of the interview to reinforce your interest and leave a lasting impression.",
+qs:[
+{q:"What is the main purpose of this workshop?",o:["Learning to write resumes","Preparing for job interviews","Improving writing skills","Networking strategies"],a:1},
+{q:"What does STAR stand for?",o:["Study, Test, Achieve, Reflect","Situation, Task, Action, Result","Speak, Think, Adapt, React","Skill, Training, Application, Result"],a:1},
+{q:"How early should you arrive for an interview?",o:["30 minutes early","Exactly on time","10–15 minutes early","5 minutes early"],a:2},
+{q:"What should you research before an interview?",o:["The interviewer's personal life","The company's mission and achievements","Other candidates","Salary data only"],a:1},
+{q:"What reduces filler words like 'um' and 'uh'?",o:["Speaking faster","Practicing aloud","Writing more","Memorizing a script"],a:1},
+{q:"The STAR method is used for:",o:["Evaluating companies","Structuring interview answers","Writing resumes","Negotiating salary"],a:1},
+{q:"Interviews are described as:",o:["One-way assessments","Two-way conversations","Group activities","Online-only events"],a:1},
+{q:"What should you send within 24 hours after an interview?",o:["A resume","A thank-you email","A formal complaint","A follow-up call"],a:1},
+{q:"Asking thoughtful questions during the interview shows:",o:["Lack of preparation","Nervousness","Genuine interest","Overconfidence"],a:2},
+{q:"'Aligns with' most nearly means:",o:["Conflicts with","Matches or fits","Replaces","Contradicts"],a:1},
+{q:"What type of questions should you ask the interviewer?",o:["Personal questions","Salary questions immediately","Thoughtful questions about the role","Questions about other candidates"],a:2},
+{q:"The word 'reinforce' in the passage means:",o:["Weaken","Remove","Strengthen","Question"],a:2},
+{q:"What helps make a positive first impression?",o:["Arriving exactly on time","Dressing casually","Arriving early and dressing professionally","Speaking loudly"],a:2},
+{q:"The STAR method improves answers by making them:",o:["Longer and detailed","Structured and memorable","Shorter and vague","More emotional"],a:1},
+{q:"Why should you evaluate the company too?",o:["To negotiate better pay","To ensure the role matches your goals","To impress the interviewer","To prepare harder questions"],a:1},
+{q:"'Thorough preparation' means:",o:["Quick review","Preparing in great detail","Guessing answers","Avoiding the topic"],a:1},
+{q:"The tone of this workshop is:",o:["Humorous","Practical and instructional","Formal and academic","Critical"],a:1},
+{q:"Which is NOT mentioned as interview advice?",o:["Using the STAR method","Researching the company","Sending a thank-you email","Bringing printed references"],a:3},
+{q:"'Filler words' refer to:",o:["Technical vocabulary","Meaningless sounds like 'um' used while thinking","Key action words","Academic jargon"],a:1},
+{q:"What is the overall message of this workshop?",o:["Avoid interviews if possible","Careful preparation leads to success","Focus only on qualifications","Interviews are unimportant"],a:1},
+]},
+{title:"Technology Lecture: Artificial Intelligence and Society",ctx:"A university professor examines how artificial intelligence is reshaping industries and raising ethical questions.",
+sample:"Today's lecture focuses on artificial intelligence and its growing influence across society. Machine learning algorithms can now analyze vast datasets and identify patterns that would take human researchers years to discover. In healthcare, AI systems are achieving diagnostic accuracy that rivals experienced physicians in detecting certain types of cancer from medical imaging. Financial institutions use predictive algorithms to assess credit risks and detect fraudulent transactions in real time. However, AI presents significant ethical challenges. Algorithmic bias can perpetuate discrimination when training data reflects historical inequalities. For example, facial recognition systems have shown lower accuracy rates for certain demographic groups. The displacement of workers through automation raises serious concerns about economic inequality and the urgent need for workforce reskilling programs. Experts continue to debate whether artificial general intelligence — which could theoretically match human cognitive abilities across all domains — will emerge within the coming decades. Meanwhile, transparent and accountable AI governance frameworks are essential to ensure these powerful technologies serve the common good.",
+qs:[
+{q:"What is the main topic of this lecture?",o:["Robotics engineering","AI and its societal impact","Computer programming","Internet history"],a:1},
+{q:"What can machine learning algorithms do?",o:["Replace all human jobs immediately","Analyze vast datasets and find patterns","Create art and music only","Predict the weather accurately"],a:1},
+{q:"In healthcare, AI rivals physicians in:",o:["Surgery","Detecting cancer from medical imaging","Prescribing medication","Patient communication"],a:1},
+{q:"What do financial institutions use AI for?",o:["Customer service only","Assessing credit risk and detecting fraud","Replacing accountants","Managing physical cash"],a:1},
+{q:"What is algorithmic bias?",o:["A programming error","AI discrimination caused by biased training data","A hardware malfunction","Slow algorithm speed"],a:1},
+{q:"Facial recognition shows lower accuracy for:",o:["Elderly people only","Certain demographic groups","Children under ten","Men in general"],a:1},
+{q:"What major concern does automation raise?",o:["Too much productivity","Economic inequality and job displacement","Environmental pollution","Overuse of electricity"],a:1},
+{q:"What does 'reskilling' mean?",o:["Retiring workers early","Learning new skills for different jobs","Outsourcing work overseas","Hiring more robots"],a:1},
+{q:"What is artificial general intelligence?",o:["A specific robot model","AI that can match human cognition across all areas","A medical diagnosis tool","The AI we currently use daily"],a:1},
+{q:"'Perpetuate' most closely means:",o:["End","Continue or sustain","Discover","Remove"],a:1},
+{q:"Fraud detection by AI happens:",o:["Weekly","In real time","Yearly","After manual review"],a:1},
+{q:"What is needed to ensure AI serves the public good?",o:["Fewer regulations","Transparent and accountable governance frameworks","Unlimited corporate control","Slower development"],a:1},
+{q:"'Vast datasets' refers to:",o:["Small data files","Extremely large amounts of data","Classified government records","Medical records only"],a:1},
+{q:"The lecture's overall tone is:",o:["Strictly positive about AI","Strictly negative about AI","Balanced, noting both benefits and challenges","Humorous and informal"],a:2},
+{q:"The word 'displace' in the lecture means:",o:["Improve working conditions","Replace or remove from a position","Train workers","Hire more employees"],a:1},
+{q:"Which sector is NOT mentioned in the lecture?",o:["Healthcare","Finance","Agriculture","Technology governance"],a:2},
+{q:"Why is training data important for AI?",o:["It determines internet speed","It shapes what AI learns and can introduce bias","It controls energy usage","It stores all user information"],a:1},
+{q:"'Diagnostic accuracy' refers to:",o:["Speed of data processing","Correctness of medical diagnoses","Cost of medical treatment","Patient satisfaction levels"],a:1},
+{q:"The pattern-finding ability of AI is compared to:",o:["Searching a library","Years of human research","Writing a textbook","Teaching in a classroom"],a:1},
+{q:"What is the key takeaway from this lecture?",o:["AI should be banned","AI is only useful in healthcare","AI offers benefits but requires careful ethical oversight","AI will replace all professors"],a:2},
+]},
 ];
 
 // ═══ SPEAKING DATA ═══
@@ -285,6 +334,18 @@ const GRAMMAR=[
 {re:/\b(thier)\b/gi,fix:"their",rule:"Spelling: their"},
 {re:/\b(wich)\b/gi,fix:"which",rule:"Spelling: which"},
 {re:/\.\s+[a-z]/g,fix:m=>". "+m.trim().slice(-1).toUpperCase(),rule:"Capitalize after period"},
+{re:/\b(alright)\b/gi,fix:"all right",rule:"Spelling: 'all right' (two words in formal writing)"},
+{re:/\b(irregardless)\b/gi,fix:"regardless",rule:"Use 'regardless,' not 'irregardless'"},
+{re:/\bcould of\b/gi,fix:"could have",rule:"Use 'could have,' not 'could of'"},
+{re:/\bwould of\b/gi,fix:"would have",rule:"Use 'would have,' not 'would of'"},
+{re:/\bshould of\b/gi,fix:"should have",rule:"Use 'should have,' not 'should of'"},
+{re:/\bmust of\b/gi,fix:"must have",rule:"Use 'must have,' not 'must of'"},
+{re:/\b(atleast)\b/gi,fix:"at least",rule:"'At least' is two words"},
+{re:/\b(noone)\b/gi,fix:"no one",rule:"'No one' is two words"},
+{re:/\b(eachother)\b/gi,fix:"each other",rule:"'Each other' is two words"},
+{re:/\b(incase)\b/gi,fix:"in case",rule:"'In case' is two words"},
+{re:/\b(wellbeing)\b/gi,fix:"well-being",rule:"Hyphenate: 'well-being'"},
+{re:/\b(gonna|wanna|gotta)\b/gi,fix:m=>({"gonna":"going to","wanna":"want to","gotta":"have to"})[m.toLowerCase()]||m,rule:"Use formal forms in academic writing"},
 ];
 
 function checkWriting(text){
@@ -341,19 +402,48 @@ function useRec(){
 function analyzeSpeech(text){
   if(!text.trim())return null;
   const words=text.trim().split(/\s+/);const wc=words.length;const fb=[];
-  if(wc<30)fb.push({t:"warn",l:"분량 부족",m:"더 길게 말해보세요. 120-180단어를 목표로.",tip:"Add examples, reasons, and personal experiences."});
-  else if(wc>=100)fb.push({t:"ok",l:"충분한 분량",m:wc+"단어"});
-  const fillers=["um","uh","like","you know","basically","actually","literally"];
+  // Word count
+  if(wc<30)fb.push({t:"warn",l:"분량 부족",m:"더 길게 말해보세요. 120–180단어를 목표로.",tip:"Add examples, reasons, and personal experiences to develop your response."});
+  else if(wc>=120)fb.push({t:"ok",l:"충분한 분량 ✓",m:`${wc}단어 — IELTS/PTE 목표 범위 달성`});
+  else if(wc>=60)fb.push({t:"warn",l:"분량 보통",m:`${wc}단어. 더 상세한 설명을 추가해보세요.`,tip:"Aim for 120–180 words for a full IELTS/PTE response."});
+  // Filler words
+  const fillers=["um","uh","like","you know","basically","actually","literally","i mean","so yeah"];
   const uf=fillers.filter(f=>text.toLowerCase().includes(f));
-  if(uf.length)fb.push({t:"warn",l:"필러 단어",m:"줄여보세요: "+uf.join(", "),tip:"Pause silently instead of using filler words."});
-  const conn=["however","moreover","furthermore","for example","for instance","on the other hand","therefore","consequently"];
+  if(uf.length)fb.push({t:"warn",l:"필러 단어 감지",m:"줄여보세요: "+uf.join(", "),tip:"Replace filler words with a brief pause. Silence is better than 'um.'"});
+  else if(wc>30)fb.push({t:"ok",l:"필러 단어 없음 ✓",m:"명확하고 유창한 발화입니다."});
+  // Linking words / discourse markers
+  const conn=["however","moreover","furthermore","for example","for instance","on the other hand","therefore","consequently","in addition","nevertheless","firstly","secondly","finally","in conclusion"];
   const uc=conn.filter(c=>text.toLowerCase().includes(c));
-  if(!uc.length&&wc>30)fb.push({t:"up",l:"연결어 부족",m:"'However,' 'For example' 등 연결어를 사용해보세요."});
-  if(uc.length>=2)fb.push({t:"ok",l:"연결어 사용 ✓",m:uc.join(", ")});
+  if(!uc.length&&wc>30)fb.push({t:"up",l:"연결어 부족",m:"담화 표지어를 사용해보세요.",tip:"Try: 'However,' 'Moreover,' 'For example,' 'Therefore,' 'In addition.'"});
+  else if(uc.length>=3)fb.push({t:"ok",l:"연결어 사용 우수 ✓",m:"사용한 표지어: "+uc.join(", ")});
+  else if(uc.length>=1)fb.push({t:"up",l:"연결어 일부 사용",m:"사용: "+uc.join(", ")+". 더 다양하게 사용해보세요.",tip:"Aim for at least 3 different discourse markers in a full response."});
+  // Vocabulary diversity
   const uniq=new Set(words.map(w=>w.toLowerCase().replace(/[^a-z]/g,"")).filter(Boolean));
-  if(uniq.size/Math.max(wc,1)<0.45&&wc>20)fb.push({t:"up",l:"어휘 다양성",m:"같은 단어 반복을 줄여보세요.",tip:"'good'→'beneficial/excellent,' 'bad'→'detrimental/harmful'"});
-  fb.push({t:"tip",l:"발음 & 억양 팁",m:"",tip:"• Content words (명사, 동사, 형용사)를 더 강하게 발음\n• 의문문은 올리고, 평서문은 내려서 말하기\n• thought groups 사이에 짧은 pause 넣기\n• /θ/(think), /ð/(this), /r/ vs /l/ 연습"});
+  const lex=uniq.size/Math.max(wc,1);
+  if(lex<0.45&&wc>20)fb.push({t:"up",l:"어휘 다양성 부족",m:"같은 단어 반복을 줄여보세요.",tip:"'good'→'beneficial/outstanding,' 'bad'→'detrimental/harmful,' 'big'→'substantial/significant.'"});
+  else if(lex>0.6)fb.push({t:"ok",l:"어휘 다양성 우수 ✓",m:"다양한 어휘를 효과적으로 사용하고 있습니다."});
+  // Sentence variety (rough estimate via punctuation)
+  const sentCount=(text.match(/[.!?]+/g)||[]).length;
+  if(wc>50&&sentCount>0){const avgSentLen=Math.round(wc/sentCount);
+    if(avgSentLen>30)fb.push({t:"warn",l:"문장이 너무 깁니다",m:`평균 ${avgSentLen}단어/문장. 문장을 나눠보세요.`,tip:"Use shorter sentences or connect with 'which,' 'that,' 'because.'"});
+    else if(avgSentLen<5&&sentCount>3)fb.push({t:"warn",l:"문장이 너무 짧습니다",m:"더 복잡한 문장 구조를 시도해보세요.",tip:"Combine ideas using 'although,' 'while,' 'since,' or relative clauses."});
+  }
+  // Fixed pronunciation tip
+  fb.push({t:"tip",l:"발음 & 억양 팁",m:"",tip:"• 명사·동사·형용사 강세 두어 말하기\n• 평서문은 끝을 내리고, 의문문은 올리기\n• Thought group 사이에 짧은 pause 넣기\n• /θ/(think), /ð/(this), /r/ vs /l/ 집중 연습\n• -ed 어미: /t/ (walked), /d/ (played), /ɪd/ (wanted)"});
   return{fb,wc};
+}
+
+// ═══════════════════════════════════════
+// STREAK UTILITY
+function calcStreak(scores){
+  const today=todayStr();const dates=Object.keys(scores).sort().reverse();
+  if(!dates.length)return 0;
+  let streak=0;const d=new Date(today);
+  for(const date of dates){
+    const expected=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+    if(date===expected){streak++;d.setDate(d.getDate()-1);}else break;
+  }
+  return streak;
 }
 
 // ═══════════════════════════════════════
@@ -366,6 +456,7 @@ export {
   pick,
   todayStr,
   fmtDate,
+  calcStreak,
   loadData,
   saveData,
   exportData,

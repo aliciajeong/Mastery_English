@@ -12,6 +12,7 @@ import {
   WRITE_IELTS,
   WRITE_PTE,
   analyzeSpeech,
+  calcStreak,
   checkWriting,
   exportData,
   hashStr,
@@ -235,6 +236,7 @@ function Vocab({vocab,cur,scores,save}){
               <div><span style={{color:C.blue}}>동의어:</span> {v.syn.join(", ")}</div>
               {v.ant.length>0&&<div><span style={{color:C.pink}}>반의어:</span> {v.ant.join(", ")}</div>}
               <div><span style={{color:C.cyan}}>비슷한 단어:</span> {v.sim.join(", ")}</div>
+              {v.ex&&<div style={{marginTop:4,paddingTop:4,borderTop:`1px solid ${C.border}33`,color:C.dim,fontStyle:"italic"}}><span style={{color:C.accent,fontStyle:"normal",fontWeight:600}}>예문:</span> {v.ex}</div>}
             </div>}
           </div>
         ))}
@@ -260,7 +262,8 @@ function Vocab({vocab,cur,scores,save}){
     if(!scores[cur]?.vocab)save({...scores,[cur]:{...(scores[cur]||{}),vocab:pct}});
     return<Res pct={pct} ok={ok} n={n} items={vocab.map((v,i)=>{
       let c;if(mode==="synonym")c=ans[i]===v.syn[0];else if(mode==="meaning")c=(ans[i]||"").trim().toLowerCase()===v.k.toLowerCase();else c=(ans[i]||"").trim().toLowerCase()===v.w.toLowerCase();
-      return{l:`${v.w} — ${v.k}`,ok:c,ua:ans[i]||"미답"};
+      const correctAns=mode==="synonym"?v.syn[0]:mode==="meaning"?v.k:v.w;
+      return{l:`${v.w} — ${v.k}`,ok:c,ua:ans[i]||"미답",ca:!c?correctAns:undefined};
     })} retry={reset} back={()=>{setMode("learn");reset()}} bl="단어 목록"/>;
   }
 
@@ -343,7 +346,7 @@ function Reading({di,cur,scores,save,exam}){
   if(show){
     let ok=0;d.qs.forEach((qq,i)=>{if(ans[i]===qq.a)ok++});const pct=Math.round(ok/n*100);
     if(scores[cur]?.reading===undefined)save({...scores,[cur]:{...(scores[cur]||{}),reading:pct}});
-    return<Res pct={pct} ok={ok} n={n} items={d.qs.map((qq,i)=>({l:qq.q,ok:ans[i]===qq.a,ua:qq.o[ans[i]]||"미답",ca:qq.o[qq.a]}))} retry={reset}/>;
+    return<Res pct={pct} ok={ok} n={n} items={d.qs.map((qq,i)=>({l:qq.q,ok:ans[i]===qq.a,ua:qq.o[ans[i]]||"미답",ca:qq.o[qq.a]}))} retry={reset} back={reset} bl="지문으로 돌아가기"/>;
   }
   const qq=d.qs[q];
   return(<div>
@@ -528,14 +531,30 @@ function History({scores}){
   const dates=Object.keys(scores).sort().reverse();
   if(!dates.length)return<div style={{textAlign:"center",padding:"40px 0",color:C.muted}}><div style={{fontSize:32,marginBottom:8}}>▦</div><div style={{fontSize:12}}>기록이 없어요</div></div>;
   const totalDays=dates.length;
-  const avgScore=Math.round(dates.reduce((sum,d)=>{const s=scores[d];const nums=Object.values(s).filter(v=>typeof v==="number");return sum+(nums.length?nums.reduce((a,b)=>a+b,0)/nums.length:0)},0)/totalDays);
+  const streak=calcStreak(scores);
+  const allNums=dates.flatMap(d=>Object.values(scores[d]).filter(v=>typeof v==="number"));
+  const avgScore=allNums.length?Math.round(allNums.reduce((a,b)=>a+b,0)/allNums.length):0;
+  const sectionLabels={vocab:"단어",reading:"Reading",listening:"Listening",speaking:"Speaking",writing:"Writing"};
+  const sectionColors={vocab:C.accent,reading:C.blue,listening:C.purple,speaking:C.warn,writing:C.pink};
   return(<div>
     <Hdr i="▦" t="학습 기록" s={`${totalDays}일 학습 · 평균 ${avgScore}%`} c={C.accent}/>
-    {dates.map(d=>{const s=scores[d];return(
+    {/* Summary stats */}
+    <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr",gap:6,marginBottom:14}}>
+      {[{l:"총 학습일",v:`${totalDays}일`,c:C.accent},{l:"연속 학습",v:`${streak}일 🔥`,c:streak>=3?C.warn:C.dim},{l:"평균 점수",v:`${avgScore}%`,c:avgScore>=80?C.ok:avgScore>=50?C.warn:C.no}].map((s,i)=>(
+        <div key={i} style={{background:C.card,border:`1px solid ${C.border}`,borderRadius:8,padding:"10px 8px",textAlign:"center"}}>
+          <div style={{fontSize:16,fontWeight:800,color:s.c}}>{s.v}</div>
+          <div style={{fontSize:9,color:C.muted,marginTop:2}}>{s.l}</div>
+        </div>
+      ))}
+    </div>
+    {dates.map(d=>{const s=scores[d];const nums=Object.values(s).filter(v=>typeof v==="number");const dayAvg=nums.length?Math.round(nums.reduce((a,b)=>a+b,0)/nums.length):null;return(
       <div key={d} style={{background:C.card,border:`1px solid ${C.border}`,borderRadius:8,padding:"10px 14px",marginBottom:6}}>
-        <div style={{fontSize:11,fontFamily:F.m,color:C.accent,marginBottom:5}}>{d}</div>
+        <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:5}}>
+          <span style={{fontSize:11,fontFamily:F.m,color:C.accent}}>{d}</span>
+          {dayAvg!==null&&<span style={{fontSize:10,fontWeight:600,color:dayAvg>=80?C.ok:dayAvg>=50?C.warn:C.no}}>{dayAvg}%</span>}
+        </div>
         <div style={{display:"flex",gap:5,flexWrap:"wrap"}}>
-          {Object.entries(s).map(([k,v])=><span key={k} style={{background:C.input,borderRadius:4,padding:"2px 7px",fontSize:9,color:C.dim}}>{k}: {typeof v==="number"?v+"%":"✓"}</span>)}
+          {Object.entries(s).map(([k,v])=><span key={k} style={{background:C.input,borderRadius:4,padding:"2px 7px",fontSize:9,color:sectionColors[k]||C.dim,fontWeight:600}}>{sectionLabels[k]||k}: {typeof v==="number"?v+"%":"✓"}</span>)}
         </div>
       </div>
     )})}
