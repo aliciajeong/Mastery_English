@@ -423,10 +423,11 @@ function analyzeSpeech(text){
   if(lex<0.45&&wc>20)fb.push({t:"up",l:"어휘 다양성 부족",m:"같은 단어 반복을 줄여보세요.",tip:"'good'→'beneficial/outstanding,' 'bad'→'detrimental/harmful,' 'big'→'substantial/significant.'"});
   else if(lex>0.6)fb.push({t:"ok",l:"어휘 다양성 우수 ✓",m:"다양한 어휘를 효과적으로 사용하고 있습니다."});
   // Sentence variety (rough estimate via punctuation)
+  const MAX_AVG_SENT_LEN=30;const MIN_AVG_SENT_LEN=5;const MIN_SENT_COUNT=3;
   const sentCount=(text.match(/[.!?]+/g)||[]).length;
   if(wc>50&&sentCount>0){const avgSentLen=Math.round(wc/sentCount);
-    if(avgSentLen>30)fb.push({t:"warn",l:"문장이 너무 깁니다",m:`평균 ${avgSentLen}단어/문장. 문장을 나눠보세요.`,tip:"Use shorter sentences or connect with 'which,' 'that,' 'because.'"});
-    else if(avgSentLen<5&&sentCount>3)fb.push({t:"warn",l:"문장이 너무 짧습니다",m:"더 복잡한 문장 구조를 시도해보세요.",tip:"Combine ideas using 'although,' 'while,' 'since,' or relative clauses."});
+    if(avgSentLen>MAX_AVG_SENT_LEN)fb.push({t:"warn",l:"문장이 너무 깁니다",m:`평균 ${avgSentLen}단어/문장. 문장을 나눠보세요.`,tip:"Use shorter sentences or connect with 'which,' 'that,' 'because.'"});
+    else if(avgSentLen<MIN_AVG_SENT_LEN&&sentCount>MIN_SENT_COUNT)fb.push({t:"warn",l:"문장이 너무 짧습니다",m:"더 복잡한 문장 구조를 시도해보세요.",tip:"Combine ideas using 'although,' 'while,' 'since,' or relative clauses."});
   }
   // Fixed pronunciation tip
   fb.push({t:"tip",l:"발음 & 억양 팁",m:"",tip:"• 명사·동사·형용사 강세 두어 말하기\n• 평서문은 끝을 내리고, 의문문은 올리기\n• Thought group 사이에 짧은 pause 넣기\n• /θ/(think), /ð/(this), /r/ vs /l/ 집중 연습\n• -ed 어미: /t/ (walked), /d/ (played), /ɪd/ (wanted)"});
